@@ -1,0 +1,32 @@
+# Backups
+.backups/
+*.tar.gz
+*.zip
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-selfcheck.json
+pip-log.txt
+.pytest_cache/
+.tox/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log

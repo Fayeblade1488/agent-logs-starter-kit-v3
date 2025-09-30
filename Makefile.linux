@@ -1,0 +1,130 @@
+# Makefile.linux — Agent Logs (GNU/Linux)
+SHELL := $(shell which bash)
+.DEFAULT_GOAL := help
+
+.PHONY: help show_logging_prefs update_readme create_log_dirs list_logs \
+        clean_old_logs clean_old_logs_execute \
+        create_incident_log create_change_log create_success_log create_note_log create_daily_log \
+        backup_logs print_env
+
+help:
+	@echo "Usage: make -f Makefile.linux [target]"
+	@echo "Targets: create_log_dirs, list_logs, clean_old_logs, clean_old_logs_execute,"
+	@echo "         create_incident_log, create_change_log, create_success_log, create_note_log, create_daily_log, backup_logs, print_env"
+
+print_env:
+	@echo "SHELL: $(SHELL)"; $(SHELL) --version | head -1
+
+show_logging_prefs:
+	@echo "Logging categories: incidents, changes, successful, notes, daily"
+
+update_readme:
+	@echo "Placeholder for README automation."
+
+create_log_dirs:
+	@echo "Ensuring directories..."
+	@mkdir -p incidents daily changes notes successful
+	@echo "Ready: incidents daily changes notes successful"
+
+list_logs:
+	@for d in incidents daily changes notes successful; do \
+		echo "=== $${d^} Logs ==="; \
+		ls -lah --time-style=long-iso $$d 2>/dev/null || echo "None"; \
+		echo ""; \
+	done
+
+clean_old_logs:
+	@echo "=== DRY RUN: Would remove logs older than 30 days ==="
+	@echo "Incidents:";  find incidents/  -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+	@echo ""; echo "Daily:";      find daily/      -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+	@echo ""; echo "Changes:";    find changes/    -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+	@echo ""; echo "Notes:";      find notes/      -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+	@echo ""; echo "Success:";    find successful/ -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+
+clean_old_logs_execute:
+	@echo "=== EXECUTING: Removing logs older than 30 days ==="
+	@find incidents/  -name "*.md" -type f -mtime +30 -print -delete 2>/dev/null || true
+	@find daily/      -name "*.md" -type f -mtime +30 -print -delete 2>/dev/null || true
+	@find changes/    -name "*.md" -type f -mtime +30 -print -delete 2>/dev/null || true
+	@find notes/      -name "*.md" -type f -mtime +30 -print -delete 2>/dev/null || true
+	@find successful/ -name "*.md" -type f -mtime +30 -print -delete 2>/dev/null || true
+	@echo "Done."
+
+create_incident_log: create_log_dirs
+	@filename=incidents/$$(date +%F)_incident_$$(date +%s).md; \
+	echo "---" > "$$filename"; \
+	echo "title: Incident Report" >> "$$filename"; \
+	echo "date: $$(date -u --iso-8601=seconds)" >> "$$filename"; \
+	echo "category: incident" >> "$$filename"; \
+	echo "---" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "# Incident Report - $$(date +%F)" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Summary" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Context" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Actions Taken" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Outcome" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Follow-up Required" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Resolution" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "Created incident log: $$filename"
+
+create_change_log: create_log_dirs
+	@filename=changes/$$(date +%F)_change_$$(date +%s).md; \
+	echo "---" > "$$filename"; \
+	echo "title: System Change Log" >> "$$filename"; \
+	echo "date: $$(date -u --iso-8601=seconds)" >> "$$filename"; \
+	echo "category: change" >> "$$filename"; \
+	echo "---" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "# Change Log - $$(date +%F)" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Summary" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Context" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Changes Made" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Outcome" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Follow-up Required" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "Created change log: $$filename"
+
+create_success_log: create_log_dirs
+	@filename=successful/$$(date +%F)_success_$$(date +%s).md; \
+	echo "---" > "$$filename"; \
+	echo "title: Success Report" >> "$$filename"; \
+	echo "date: $$(date -u --iso-8601=seconds)" >> "$$filename"; \
+	echo "category: success" >> "$$filename"; \
+	echo "---" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "# Success Report - $$(date +%F)" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Summary" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Context" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Actions Taken" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Outcome" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Follow-up Required" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "Created success log: $$filename"
+
+create_note_log: create_log_dirs
+	@filename=notes/$$(date +%F)_note_$$(date +%s).md; \
+	echo "---" > "$$filename"; \
+	echo "title: Note" >> "$$filename"; \
+	echo "date: $$(date -u --iso-8601=seconds)" >> "$$filename"; \
+	echo "category: note" >> "$$filename"; \
+	echo "---" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "# Note - $$(date +%F)" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Summary" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Content" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Follow-up Required" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "Created note log: $$filename"
+
+create_daily_log: create_log_dirs
+	@filename=daily/$$(date +%F)_daily_$$(date +%s).md; \
+	echo "---" > "$$filename"; \
+	echo "title: Daily Log" >> "$$filename"; \
+	echo "date: $$(date -u --iso-8601=seconds)" >> "$$filename"; \
+	echo "category: daily" >> "$$filename"; \
+	echo "---" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "# Daily Log - $$(date +%F)" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Highlights" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Tasks" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Blockers" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "## Notes" >> "$$filename"; echo "" >> "$$filename"; \
+	echo "Created daily log: $$filename"
+
+backup_logs:
+	@mkdir -p .backups
+	@name=.backups/agent_logs_backup_$$(date +%Y%m%d_%H%M%S).tar.gz
+	@tar --exclude=".backups" --exclude-vcs -czf $$name .
+	@echo "Backup created: $$name"
