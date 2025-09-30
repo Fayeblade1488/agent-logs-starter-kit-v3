@@ -19,3 +19,4 @@ jobs:
         uses: microsoft/psscriptanalyzer-action@v1.2.0
         with:
           path: AgentLogs.ps1
+          settingsPath: ./.github/pssa-ruleset.psd1
