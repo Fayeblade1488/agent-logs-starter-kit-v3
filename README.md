@@ -34,7 +34,7 @@ Logs are stored as Markdown files with YAML front matter, making them easy to pa
 2.  Initialize the log directories:
     -   **macOS:** `make -f Makefile.macos create_log_dirs`
     -   **Linux:** `make -f Makefile.linux create_log_dirs`
-    -   **Windows:** `.\AgentLogs.ps1 Create-LogDirs`
+    -   **Windows:** `.\AgentLogs.ps1 New-LogDirs`
 
 ## Usage
 
@@ -43,30 +43,30 @@ Logs are stored as Markdown files with YAML front matter, making them easy to pa
 -   **Daily Log:**
     -   macOS: `make -f Makefile.macos create_daily_log`
     -   Linux: `make -f Makefile.linux create_daily_log`
-    -   Windows: `.\AgentLogs.ps1 Create-DailyLog`
+    -   Windows: `.\AgentLogs.ps1 New-DailyLog`
 -   **Incident Log:**
     -   macOS: `make -f Makefile.macos create_incident_log`
     -   Linux: `make -f Makefile.linux create_incident_log`
-    -   Windows: `.\AgentLogs.ps1 Create-IncidentLog`
+    -   Windows: `.\AgentLogs.ps1 New-IncidentLog`
 -   **Change Log:**
     -   macOS: `make -f Makefile.macos create_change_log`
     -   Linux: `make -f Makefile.linux create_change_log`
-    -   Windows: `.\AgentLogs.ps1 Create-ChangeLog`
+    -   Windows: `.\AgentLogs.ps1 New-ChangeLog`
 -   **Success Log:**
     -   macOS: `make -f Makefile.macos create_success_log`
     -   Linux: `make -f Makefile.linux create_success_log`
-    -   Windows: `.\AgentLogs.ps1 Create-SuccessLog`
+    -   Windows: `.\AgentLogs.ps1 New-SuccessLog`
 -   **Note Log:**
     -   macOS: `make -f Makefile.macos create_note_log`
     -   Linux: `make -f Makefile.linux create_note_log`
-    -   Windows: `.\AgentLogs.ps1 Create-NoteLog`
+    -   Windows: `.\AgentLogs.ps1 New-NoteLog`
 
 ### Other Commands
 
 -   **List Logs:**
     -   macOS: `make -f Makefile.macos list_logs`
     -   Linux: `make -f Makefile.linux list_logs`
-    -   Windows: `.\AgentLogs.ps1 List-Logs`
+    -   Windows: `.\AgentLogs.ps1 Get-Logs`
 -   **Backup Logs:**
     -   macOS: `make -f Makefile.macos backup_logs`
     -   Linux: `make -f Makefile.linux backup_logs`
@@ -74,11 +74,11 @@ Logs are stored as Markdown files with YAML front matter, making them easy to pa
 -   **Clean Old Logs (Dry Run):**
     -   macOS: `make -f Makefile.macos clean_old_logs`
     -   Linux: `make -f Makefile.linux clean_old_logs`
-    -   Windows: `.\AgentLogs.ps1 Clean-OldLogs -DryRun`
+    -   Windows: `.\AgentLogs.ps1 Remove-OldLogs -DryRun`
 -   **Clean Old Logs (Execute):**
     -   macOS: `make -f Makefile.macos clean_old_logs_execute`
     -   Linux: `make -f Makefile.linux clean_old_logs_execute`
-    -   Windows: `.\AgentLogs.ps1 Clean-OldLogs`
+    -   Windows: `.\AgentLogs.ps1 Remove-OldLogs`
 
 ## Integrations
 
