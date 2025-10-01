@@ -18,5 +18,5 @@ jobs:
           Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -ErrorAction Stop
           $ErrorActionPreference = 'Stop'
           Invoke-ScriptAnalyzer -Path ./AgentLogs.ps1 `
-            -SettingsPath ./.github/pssa-ruleset.psd1 `
+            -Settings ./.github/pssa-ruleset.psd1 `
             -Recurse:$false -Severity Error,Warning -EnableExit
