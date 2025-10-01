@@ -77,7 +77,7 @@ function Find-OldLogs {
   }
 }
 
-function Remove-OldLogs { param([switch]$DryRun = $true)
+function Remove-OldLogs { param([switch]$DryRun = $false)
   $old = Find-OldLogs -Days 30 | Sort-Object FullName -Unique
   if (-not $old) { Write-Output "No logs older than 30 days."; return }
   if ($DryRun) {
