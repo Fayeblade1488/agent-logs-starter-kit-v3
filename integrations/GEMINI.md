@@ -25,7 +25,7 @@ make -f Makefile.linux create_log_dirs && make -f Makefile.linux create_daily_lo
 ```
 **Windows**
 ```pwsh
-.\AgentLogs.ps1 Create-LogDirs; .\AgentLogs.ps1 Create-DailyLog
+.\AgentLogs.ps1 New-LogDirs; .\AgentLogs.ps1 New-DailyLog
 ```
 
 ## Agent Rules (Gemini)

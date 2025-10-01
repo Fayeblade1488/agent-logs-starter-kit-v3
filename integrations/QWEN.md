@@ -22,8 +22,8 @@ make -f Makefile.linux create_daily_log
 ```
 **Windows**
 ```pwsh
-.\AgentLogs.ps1 Create-LogDirs
-.\AgentLogs.ps1 Create-DailyLog
+.\AgentLogs.ps1 New-LogDirs
+.\AgentLogs.ps1 New-DailyLog
 ```
 
 ## Minimal Agent Policy (Qwen)
@@ -61,7 +61,7 @@ make -f Makefile.linux create_daily_log
 ```
 make -f Makefile.linux create_success_log
 # or
-pwsh -File .\AgentLogs.ps1 Create-SuccessLog
+pwsh -File .\AgentLogs.ps1 New-SuccessLog
 ```
 
 Qwen agents can safely rely on these commands without additional dependencies.
