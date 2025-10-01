@@ -3,9 +3,9 @@
 param(
   [Parameter(Position=0)]
   [ValidateSet(
-    'Help','Show-LoggingPrefs','Update-Readme','Create-LogDirs','List-Logs',
-    'Clean-OldLogs','Remove-OldLogs',
-    'Create-IncidentLog','Create-ChangeLog','Create-SuccessLog','Create-NoteLog','Create-DailyLog',
+    'Help','Show-LoggingPrefs','Update-Readme','New-LogDirs','Get-Logs',
+    'Remove-OldLogs',
+    'New-IncidentLog','New-ChangeLog','New-SuccessLog','New-NoteLog','New-DailyLog',
     'Backup-Logs'
   )]
   [string]$Target = 'Help',
@@ -26,7 +26,7 @@ function Get-DateParts {
   [pscustomobject]@{ Date=$date; Ts=$ts; Iso=$iso }
 }
 
-function Ensure-LogDirs {
+function Initialize-LogDirs {
   foreach ($d in $Dirs) { New-Item -ItemType Directory -Force -Path $d | Out-Null }
 }
 
@@ -35,34 +35,34 @@ function Help {
 Usage: pwsh -File .\AgentLogs.ps1 <Target> [-DryRun]
 
 Targets:
-  Help, Show-LoggingPrefs, Update-Readme, Create-LogDirs, List-Logs,
-  Clean-OldLogs [-DryRun], Remove-OldLogs,
-  Create-IncidentLog, Create-ChangeLog, Create-SuccessLog, Create-NoteLog, Create-DailyLog,
+  Help, Show-LoggingPrefs, Update-Readme, New-LogDirs, Get-Logs,
+  Remove-OldLogs [-DryRun],
+  New-IncidentLog, New-ChangeLog, New-SuccessLog, New-NoteLog, New-DailyLog,
   Backup-Logs
-'@ | Write-Host
+'@ | Write-Output
 }
 
 function Show-LoggingPrefs {
 @'
 Logging Categories: incidents, changes, successful, notes, daily
-'@ | Write-Host
+'@ | Write-Output
 }
 
-function Update-Readme { Write-Host "Placeholder for README automation." }
+function Update-Readme { Write-Output "Placeholder for README automation." }
 
-function Create-LogDirs { Ensure-LogDirs; Write-Host "Log directories ready: $($Dirs -join ', ')" }
+function New-LogDirs { Initialize-LogDirs; Write-Output "Log directories ready: $($Dirs -join ', ')" }
 
-function List-Logs {
+function Get-Logs {
   foreach ($d in $Dirs) {
-    Write-Host "=== $($d.Substring(0,1).ToUpper()+$d.Substring(1)) Logs ==="
+    Write-Output "=== $($d.Substring(0,1).ToUpper()+$d.Substring(1)) Logs ==="
     if (Test-Path $d) {
       Get-ChildItem -Path $d -File -Force -ErrorAction SilentlyContinue | 
         Select-Object Mode,Length,LastWriteTime,Name |
         Format-Table -AutoSize
     } else {
-      Write-Host "No $d logs found"
+      Write-Output "No $d logs found"
     }
-    Write-Host ""
+    Write-Output ""
   }
 }
 
@@ -77,20 +77,18 @@ function Find-OldLogs {
   }
 }
 
-function Clean-OldLogs { param([switch]$DryRun = $true)
+function Remove-OldLogs { param([switch]$DryRun = $true)
   $old = Find-OldLogs -Days 30 | Sort-Object FullName -Unique
-  if (-not $old) { Write-Host "No logs older than 30 days."; return }
+  if (-not $old) { Write-Output "No logs older than 30 days."; return }
   if ($DryRun) {
-    Write-Host "=== DRY RUN: Would remove the following ==="
-    $old | ForEach-Object { Write-Host $_.FullName }
+    Write-Output "=== DRY RUN: Would remove the following ==="
+    $old | ForEach-Object { Write-Output $_.FullName }
   } else {
-    Write-Host "=== EXECUTING: Removing logs older than 30 days ==="
+    Write-Output "=== EXECUTING: Removing logs older than 30 days ==="
     $old | Remove-Item -Force
-    Write-Host "Old log files removed."
+    Write-Output "Old log files removed."
   }
 }
-
-function Remove-OldLogs { Clean-OldLogs -DryRun:$false }
 
 function Write-LogFile {
   param(
@@ -98,7 +96,7 @@ function Write-LogFile {
     [Parameter(Mandatory)] [string]$Title,
     [Parameter(Mandatory)] [string]$Dir
   )
-  Ensure-LogDirs
+  Initialize-LogDirs
   $p = Get-DateParts
   $filename = Join-Path $Dir ("{0}_{1}_{2}.{3}" -f $p.Date,$Category,$p.Ts,$Ext)
   $header = @('---',"title: $Title","date: $($p.Iso)","category: $Category",'---','')
@@ -110,17 +108,17 @@ function Write-LogFile {
     'daily'    { @("# Daily Log - $($p.Date)",'','## Highlights','','## Tasks','','## Blockers','','## Notes') }
   }
   ($header + $body + @('','')) | Set-Content -Encoding UTF8 -Path $filename
-  Write-Host "Created $Category log: $filename"
+  Write-Output "Created $Category log: $filename"
 }
 
-function Create-IncidentLog { Write-LogFile -Category incident -Title 'Incident Report' -Dir 'incidents' }
-function Create-ChangeLog   { Write-LogFile -Category change   -Title 'System Change Log' -Dir 'changes' }
-function Create-SuccessLog  { Write-LogFile -Category success  -Title 'Success Report'    -Dir 'successful' }
-function Create-NoteLog     { Write-LogFile -Category note     -Title 'Note'              -Dir 'notes' }
-function Create-DailyLog    { Write-LogFile -Category daily    -Title 'Daily Log'         -Dir 'daily' }
+function New-IncidentLog { Write-LogFile -Category incident -Title 'Incident Report' -Dir 'incidents' }
+function New-ChangeLog   { Write-LogFile -Category change   -Title 'System Change Log' -Dir 'changes' }
+function New-SuccessLog  { Write-LogFile -Category success  -Title 'Success Report'    -Dir 'successful' }
+function New-NoteLog     { Write-LogFile -Category note     -Title 'Note'              -Dir 'notes' }
+function New-DailyLog    { Write-LogFile -Category daily    -Title 'Daily Log'         -Dir 'daily' }
 
 function Backup-Logs {
-  Ensure-LogDirs
+  Initialize-LogDirs
   $backupDir = '.\.backups'
   New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
   $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
@@ -128,9 +126,9 @@ function Backup-Logs {
   $items = Get-ChildItem -Path . -Force | Where-Object { $_.Name -ne '.backups' }
   if ($items) {
     Compress-Archive -Path $items.FullName -DestinationPath $zip -Force
-    Write-Host "Backup created: $zip"
+    Write-Output "Backup created: $zip"
   } else {
-    Write-Host "Nothing to back up."
+    Write-Output "Nothing to back up."
   }
 }
 
@@ -138,15 +136,14 @@ switch ($Target) {
   'Help'               { Help }
   'Show-LoggingPrefs'  { Show-LoggingPrefs }
   'Update-Readme'      { Update-Readme }
-  'Create-LogDirs'     { Create-LogDirs }
-  'List-Logs'          { List-Logs }
-  'Clean-OldLogs'      { Clean-OldLogs -DryRun:$DryRun.IsPresent }
-  'Remove-OldLogs'     { Remove-OldLogs }
-  'Create-IncidentLog' { Create-IncidentLog }
-  'Create-ChangeLog'   { Create-ChangeLog }
-  'Create-SuccessLog'  { Create-SuccessLog }
-  'Create-NoteLog'     { Create-NoteLog }
-  'Create-DailyLog'    { Create-DailyLog }
+  'New-LogDirs'        { New-LogDirs }
+  'Get-Logs'           { Get-Logs }
+  'Remove-OldLogs'     { Remove-OldLogs -DryRun:$DryRun.IsPresent }
+  'New-IncidentLog'    { New-IncidentLog }
+  'New-ChangeLog'      { New-ChangeLog }
+  'New-SuccessLog'     { New-SuccessLog }
+  'New-NoteLog'        { New-NoteLog }
+  'New-DailyLog'       { New-DailyLog }
   'Backup-Logs'        { Backup-Logs }
   default              { Help }
 }
