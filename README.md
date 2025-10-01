@@ -1,4 +1,5 @@
 # Agent Logs Starter Kit
+<img width="1024" height="1024" alt="ashley" src="https://github.com/user-attachments/assets/5a2eb7ae-054d-442f-bdac-6934fb5b40dc" />
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
