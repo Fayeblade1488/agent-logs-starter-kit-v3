@@ -1,0 +1,7 @@
+# CODEOWNERS file for agent-logs-starter-kit-v3
+# This file defines the code owners for this repository.
+# Each line is a file pattern followed by one or more owners.
+# The owner specified here will be automatically requested for review when someone opens a pull request.
+
+# Default owner for everything in the repository
+* @Fayeblade1488
