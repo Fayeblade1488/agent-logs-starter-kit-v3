@@ -1,0 +1,77 @@
+# AI Instructions for Agent Logs Starter Kit
+# This file provides structured, machine-readable instructions for an AI agent.
+# It details the repository's purpose, platform-specific prerequisites,
+# setup commands, and a comprehensive list of available actions.
+
+repository_purpose: "A universal, cross-platform logging system for AI agents. This starter kit provides a robust and universal logging scaffold for AI agents. Capturing AI interactions is crucial for traceability, auditability, and continuity. This system is designed to be simple, machine-readable, and extensible."
+
+platforms:
+  - "macOS"
+  - "Linux"
+  - "Windows"
+
+prerequisites:
+  macos: "make"
+  linux: "make"
+  windows: "PowerShell 7+"
+
+setup:
+  macos: "make -f Makefile.macos create_log_dirs"
+  linux: "make -f Makefile.linux create_log_dirs"
+  windows: "pwsh -File .\\AgentLogs.ps1 New-LogDirs"
+
+actions:
+  - name: "create_daily_log"
+    description: "Create a new daily log."
+    commands:
+      macos: "make -f Makefile.macos create_daily_log"
+      linux: "make -f Makefile.linux create_daily_log"
+      windows: "pwsh -File .\\AgentLogs.ps1 New-DailyLog"
+  - name: "create_incident_log"
+    description: "Create a new incident log."
+    commands:
+      macos: "make -f Makefile.macos create_incident_log"
+      linux: "make -f Makefile.linux create_incident_log"
+      windows: "pwsh -File .\\AgentLogs.ps1 New-IncidentLog"
+  - name: "create_change_log"
+    description: "Create a new change log."
+    commands:
+      macos: "make -f Makefile.macos create_change_log"
+      linux: "make -f Makefile.linux create_change_log"
+      windows: "pwsh -File .\\AgentLogs.ps1 New-ChangeLog"
+  - name: "create_success_log"
+    description: "Create a new success log."
+    commands:
+      macos: "make -f Makefile.macos create_success_log"
+      linux: "make -f Makefile.linux create_success_log"
+      windows: "pwsh -File .\\AgentLogs.ps1 New-SuccessLog"
+  - name: "create_note_log"
+    description: "Create a new note log."
+    commands:
+      macos: "make -f Makefile.macos create_note_log"
+      linux: "make -f Makefile.linux create_note_log"
+      windows: "pwsh -File .\\AgentLogs.ps1 New-NoteLog"
+  - name: "list_logs"
+    description: "List all logs."
+    commands:
+      macos: "make -f Makefile.macos list_logs"
+      linux: "make -f Makefile.linux list_logs"
+      windows: "pwsh -File .\\AgentLogs.ps1 Get-Logs"
+  - name: "backup_logs"
+    description: "Backup all logs."
+    commands:
+      macos: "make -f Makefile.macos backup_logs"
+      linux: "make -f Makefile.linux backup_logs"
+      windows: "pwsh -File .\\AgentLogs.ps1 Backup-Logs"
+  - name: "clean_old_logs_dry_run"
+    description: "Perform a dry run of cleaning old logs."
+    commands:
+      macos: "make -f Makefile.macos clean_old_logs"
+      linux: "make -f Makefile.linux clean_old_logs"
+      windows: "pwsh -File .\\AgentLogs.ps1 Remove-OldLogs -DryRun"
+  - name: "clean_old_logs_execute"
+    description: "Clean old logs."
+    commands:
+      macos: "make -f Makefile.macos clean_old_logs_execute"
+      linux: "make -f Makefile.linux clean_old_logs_execute"
+      windows: "pwsh -File .\\AgentLogs.ps1 Remove-OldLogs"
