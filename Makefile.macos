@@ -31,21 +31,25 @@ list_logs:
 	@echo ""; echo "=== Success Logs ==="; ls -la successful/ 2>/dev/null || echo "None"
 
 clean_old_logs:
-	@echo "=== DRY RUN: Would remove logs older than 30 days ==="
-	@echo "Incidents:";  find incidents/  -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
-	@echo ""; echo "Daily:";      find daily/      -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
-	@echo ""; echo "Changes:";    find changes/    -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
-	@echo ""; echo "Notes:";      find notes/      -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
-	@echo ""; echo "Success:";    find successful/ -name "*.md" -type f -mtime +30 2>/dev/null || echo "None"
+	@echo "=== DRY RUN: Checking for logs older than 30 days ==="
+	@found_files=$$(find incidents/ daily/ changes/ notes/ successful/ -name "*.md" -type f -mtime +30 2>/dev/null); \
+	if [ -z "$$found_files" ]; then \
+		echo "No logs older than 30 days found."; \
+	else \
+		echo "Would remove the following files:"; \
+		echo "$$found_files"; \
+	fi
 
 clean_old_logs_execute:
 	@echo "=== EXECUTING: Removing logs older than 30 days ==="
-	@find incidents/  -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true
-	@find daily/      -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true
-	@find changes/    -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true
-	@find notes/      -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true
-	@find successful/ -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true
-	@echo "Done."
+	@found_files=$$(find incidents/ daily/ changes/ notes/ successful/ -name "*.md" -type f -mtime +30 2>/dev/null); \
+	if [ -z "$$found_files" ]; then \
+		echo "No logs older than 30 days to remove."; \
+	else \
+		echo "Removing old log files..."; \
+		find incidents/ daily/ changes/ notes/ successful/ -name "*.md" -type f -mtime +30 -delete 2>/dev/null || true; \
+		echo "Done."; \
+	fi
 
 create_incident_log: create_log_dirs
 	@filename=incidents/$$(date +%F)_incident_$$(date +%s).md; \
