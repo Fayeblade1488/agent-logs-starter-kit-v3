@@ -1,4 +1,6 @@
 name: Lint PowerShell Scripts (native)
+permissions:
+  contents: read
 
 on:
   push:
