@@ -20,6 +20,13 @@ Logs are stored as Markdown files with YAML front matter, making them easy to pa
 -   **Automation:** Includes Makefiles and a PowerShell script for common tasks.
 -   **Backup and Restore:** Built-in commands for backing up and restoring logs.
 
+## Documentation
+
+For detailed documentation on the PowerShell scripts and Makefiles, please see the guides below:
+
+-   **[PowerShell Guide](./docs/PowerShell.md):** A comprehensive guide for the `AgentLogs.ps1` script.
+-   **[Makefile Guide](./docs/Makefiles.md):** A detailed guide for the `Makefile.linux` and `Makefile.macos` files.
+
 ## Getting Started
 
 ### Prerequisites
@@ -87,9 +94,20 @@ Commands are run using `make` on macOS/Linux and `pwsh` on Windows.
 
 ## For AI Agents
 
-This repository includes a machine-readable instruction file, `ai_instructions.yml`, designed for AI agents. This file provides structured details on the repository's purpose, setup, and available commands.
+This repository includes two key resources for AI agents:
 
-To get started, parse and use `ai_instructions.yml` for automated setup and operation.
+1.  **[A Natural Language Guide for AI Agents](./docs/AI_Guide.md):** A comprehensive, conversational guide that explains the "why" behind the logging system and provides a conceptual framework for its use. It is highly recommended that you read this guide first to gain a deeper understanding of the repository's purpose.
+2.  **`ai_instructions.yml`:** A machine-readable instruction file that provides the specific, structured commands for all available actions.
+
+To get started, we recommend reading the guide and then using the `ai_instructions.yml` file for automated setup and operation.
+
+## Testing
+
+This project includes a test suite for the `Makefile.linux` file. To run the tests, execute the following command:
+
+```bash
+./tests/test_makefile.sh
+```
 
 ## Integrations
 
