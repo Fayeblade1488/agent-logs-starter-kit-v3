@@ -3,7 +3,7 @@ SHELL := $(shell which bash)
 .DEFAULT_GOAL := help
 
 # Phony targets prevent conflicts with files of the same name
-.PHONY: help show_logging_prefs update_readme create_log_dirs list_logs \
+.PHONY: help show_logging_prefs create_log_dirs list_logs \
         clean_old_logs clean_old_logs_execute \
         create_incident_log create_change_log create_success_log create_note_log create_daily_log \
         backup_logs print_env
@@ -12,7 +12,8 @@ SHELL := $(shell which bash)
 help:
 	@echo "Usage: make -f Makefile.macos [target]"
 	@echo "Targets: create_log_dirs, list_logs, clean_old_logs, clean_old_logs_execute,"
-	@echo "         create_incident_log, create_change_log, create_success_log, create_note_log, create_daily_log, backup_logs, print_env"
+	@echo "         create_incident_log, create_change_log, create_success_log,"
+	@echo "         create_note_log, create_daily_log, backup_logs, print_env"
 
 # Prints the shell version
 print_env:
@@ -21,10 +22,6 @@ print_env:
 # Shows the available logging categories
 show_logging_prefs:
 	@echo "Logging categories: incidents, changes, successful, notes, daily"
-
-# Placeholder for README automation
-update_readme:
-	@echo "Placeholder for README automation."
 
 # Creates the log directories
 create_log_dirs:

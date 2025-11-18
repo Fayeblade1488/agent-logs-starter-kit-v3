@@ -3,7 +3,7 @@
 param(
   [Parameter(Position=0)]
   [ValidateSet(
-    'Help','Show-LoggingPrefs','Update-Readme','New-LogDirs','Get-Logs',
+    'Help','Show-LoggingPrefs','New-LogDirs','Get-Logs',
     'Remove-OldLogs',
     'New-IncidentLog','New-ChangeLog','New-SuccessLog','New-NoteLog','New-DailyLog',
     'Backup-Logs'
@@ -60,7 +60,7 @@ function Help {
 Usage: pwsh -File .\AgentLogs.ps1 <Target> [-DryRun]
 
 Targets:
-  Help, Show-LoggingPrefs, Update-Readme, New-LogDirs, Get-Logs,
+  Help, Show-LoggingPrefs, New-LogDirs, Get-Logs,
   Remove-OldLogs [-DryRun],
   New-IncidentLog, New-ChangeLog, New-SuccessLog, New-NoteLog, New-DailyLog,
   Backup-Logs
@@ -78,14 +78,6 @@ function Show-LoggingPrefs {
 Logging Categories: incidents, changes, successful, notes, daily
 '@ | Write-Output
 }
-
-<#
-.SYNOPSIS
-  Placeholder for README automation.
-.DESCRIPTION
-  This is a placeholder function for future README automation.
-#>
-function Update-Readme { Write-Output "Placeholder for README automation." }
 
 <#
 .SYNOPSIS
@@ -240,7 +232,6 @@ function Backup-Logs {
 switch ($Target) {
   'Help'               { Help }
   'Show-LoggingPrefs'  { Show-LoggingPrefs }
-  'Update-Readme'      { Update-Readme }
   'New-LogDirs'        { New-LogDirs }
   'Get-Logs'           { Get-Logs }
   'Remove-OldLogs'     { Remove-OldLogs -DryRun:$DryRun.IsPresent }
